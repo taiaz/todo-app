@@ -4,7 +4,7 @@ metadata:
   name: todo-app
   namespace: staging
 spec:
-  replicas: 2
+  replicas: 2  # Số lượng bản sao của ứng dụng
   selector:
     matchLabels:
       app: todo-app
@@ -15,16 +15,16 @@ spec:
     spec:
       containers:
       - name: todo-app
-        image: tonytran1997/todo-app:staging-latest  # Sử dụng image mới nhất
+        image: tonytran1997/todo-app:staging-latest  # Đây là tag mà Jenkins sẽ cập nhật sau khi push image lên Docker Hub
         ports:
-        - containerPort: 80
-        imagePullPolicy: Always
+        - containerPort: 80  # Port mà Nginx sẽ chạy bên trong container
+        imagePullPolicy: Always  # Đảm bảo luôn kéo image mới nhất
         resources:
           requests:
-            memory: "64Mi"
+            memory: "128Mi"
             cpu: "250m"
           limits:
-            memory: "128Mi"
+            memory: "256Mi"
             cpu: "500m"
 ---
 apiVersion: v1
@@ -33,10 +33,10 @@ metadata:
   name: todo-app
   namespace: staging
 spec:
-  type: NodePort  # Thay đổi LoadBalancer thành NodePort
+  type: NodePort  # Nếu bạn không có LoadBalancer, dùng NodePort để truy cập ứng dụng
   ports:
   - port: 80
     targetPort: 80
-    nodePort: 30080  # Port mở trên các node (có thể thay đổi)
+    nodePort: 30080  # Cổng truy cập từ bên ngoài
   selector:
     app: todo-app
