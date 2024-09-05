@@ -33,10 +33,9 @@ metadata:
   name: todo-app
   namespace: staging
 spec:
-  type: NodePort  # Nếu bạn không có LoadBalancer, dùng NodePort để truy cập ứng dụng
+  type: LoadBalancer  # Chuyển sang loại LoadBalancer để MetalLB phân bổ IP
   ports:
   - port: 80
     targetPort: 80
-    nodePort: 30080  # Cổng truy cập từ bên ngoài
   selector:
     app: todo-app
