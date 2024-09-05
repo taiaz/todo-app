@@ -1,6 +1,16 @@
 pipeline {
     agent any
-
+    triggers {
+        GenericTrigger(
+            genericVariables: [
+                [key: 'ref', value: '$.ref']
+            ],
+            causeString: 'Triggered on $ref',
+            printContributedVariables: true,
+            printPostContent: true,
+            silentResponse: false
+        )
+    }
     stages {
         stage('Build Docker Image') {
             steps {
