@@ -33,7 +33,7 @@ metadata:
   name: todo-app
   namespace: staging
 spec:
-  type: LoadBalancer  # Chuyển sang loại LoadBalancer để MetalLB phân bổ IP
+  type: ClusterIP  # Chỉ cần ClusterIP, không cần LoadBalancer
   ports:
   - port: 80
     targetPort: 80
