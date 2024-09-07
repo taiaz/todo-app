@@ -58,16 +58,16 @@ pipeline {
                             kubectl config set-context jenkins-context --cluster=jenkins-cluster --user=jenkins-user --namespace=${NAMESPACE}
                             kubectl config use-context jenkins-context
                         """
-                        
+
                         // Cập nhật image trong deployment bằng image mới nhất
-                        sh "kubectl set image deployment/todo-app todo-app=${LATEST_IMAGE} --namespace=${NAMESPACE}"
+                        sh "kubectl set image deployment/todo-app todo-app=${env.DOCKER_IMAGE} --namespace=${NAMESPACE}"
 
                         // Triển khai file deployment.yaml lên Kubernetes
                         sh "kubectl apply -f deployment.yaml --namespace=${NAMESPACE}"
 
 
                         // Rollout restart để tạo Pod mới
-                        sh "kubectl rollout restart deployment/todo-app --namespace=${NAMESPACE}"
+                        // sh "kubectl rollout restart deployment/todo-app --namespace=${NAMESPACE}"
 
                         // Theo dõi quá trình rollout
                         sh "kubectl rollout status deployment/todo-app --namespace=${NAMESPACE}"
