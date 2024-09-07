@@ -4,8 +4,8 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        Staging test 20
+      <header className="App-header" style={{ fontSize: '48px' }}>
+        Nhậu đi anh ơi
       </header>
     </div>
   );
