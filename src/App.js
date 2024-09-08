@@ -5,7 +5,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header" style={{ fontSize: '48px' }}>
-        Nhậu đi anh ơi
+        K8s Staging
       </header>
     </div>
   );

@@ -4,7 +4,7 @@ metadata:
   name: todo-app
   namespace: staging
 spec:
-  replicas: 2  # Số lượng bản sao của ứng dụng
+  replicas: 2
   selector:
     matchLabels:
       app: todo-app
@@ -15,10 +15,10 @@ spec:
     spec:
       containers:
       - name: todo-app
-        image: tonytran1997/todo-app:staging-latest  # Đây là tag mà Jenkins sẽ cập nhật sau khi push image lên Docker Hub
+        image: tonytran1997/todo-app:staging-latest  
         ports:
-        - containerPort: 80  # Port mà Nginx sẽ chạy bên trong container
-        imagePullPolicy: Always  # Đảm bảo luôn kéo image mới nhất
+        - containerPort: 80 
+        imagePullPolicy: Always 
         resources:
           requests:
             memory: "128Mi"
@@ -33,7 +33,7 @@ metadata:
   name: todo-app
   namespace: staging
 spec:
-  type: ClusterIP  # Chỉ cần ClusterIP, không cần LoadBalancer
+  type: ClusterIP
   ports:
   - port: 80
     targetPort: 80

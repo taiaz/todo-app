@@ -11,7 +11,6 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build image Docker với tên và tag cụ thể
                     dockerImage = docker.build(env.DOCKER_IMAGE)
                 }
             }
@@ -19,10 +18,9 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 script {
-                    // Push image lên Docker Hub với tag branch và latest
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
                         dockerImage.push("${env.BRANCH_NAME}-${env.BUILD_ID}")
-                        dockerImage.push("staging-latest")  // Tag mới nhất cho staging
+                        dockerImage.push("staging-latest")
                     }
                 }
             }
@@ -30,7 +28,6 @@ pipeline {
         stage('Check Kubernetes Connection') {
             steps {
                 script {
-                    // Kiểm tra kết nối với Kubernetes API
                     withCredentials([string(credentialsId: "${KUBECONFIG_CREDENTIALS_ID}", variable: 'KUBE_TOKEN')]) {
                         sh "curl --insecure --header 'Authorization: Bearer ${KUBE_TOKEN}' ${K8S_API_URL}/api/v1/nodes"
                     }
@@ -48,10 +45,9 @@ pipeline {
             steps {
                 script {
                     withCredentials([string(credentialsId: "${KUBECONFIG_CREDENTIALS_ID}", variable: 'KUBE_TOKEN')]) {
-                        // Checkout code từ GitHub để lấy deployment.yaml
+
                         checkout scm
 
-                        // Thiết lập context cho kubectl bằng token
                         sh """
                             kubectl config set-credentials jenkins-user --token=${KUBE_TOKEN}
                             kubectl config set-cluster jenkins-cluster --server=${K8S_API_URL} --insecure-skip-tls-verify=true
@@ -59,16 +55,12 @@ pipeline {
                             kubectl config use-context jenkins-context
                         """
 
-                        // Triển khai file deployment.yaml lên Kubernetes
                         sh "kubectl apply -f deployment.yaml --namespace=${NAMESPACE}"
 
-                        // Cập nhật image trong deployment bằng image mới nhất
                         sh "kubectl set image deployment/todo-app todo-app=${env.DOCKER_IMAGE} --namespace=${NAMESPACE}"
 
-                        // Rollout restart để tạo Pod mới
                         // sh "kubectl rollout restart deployment/todo-app --namespace=${NAMESPACE}"
 
-                        // Theo dõi quá trình rollout
                         sh "kubectl rollout status deployment/todo-app --namespace=${NAMESPACE}"
                     }
                 }
