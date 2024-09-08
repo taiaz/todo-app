@@ -4,8 +4,8 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        Production Test
+      <header className="App-header" style={{ fontSize: '48px' }}>
+        K8s Production
       </header>
     </div>
   );
