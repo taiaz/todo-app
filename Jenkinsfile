@@ -2,10 +2,10 @@ pipeline {
     agent any
     environment {
         DOCKER_IMAGE = "tonytran1997/todo-app:${env.BRANCH_NAME}-${env.BUILD_ID}"  // Image được xây dựng với tag branch-BUILD_ID
-        LATEST_IMAGE = "tonytran1997/todo-app:staging-latest"  // Image mới nhất cho môi trường staging
+        LATEST_IMAGE = "tonytran1997/todo-app:latest"  // Image mới nhất cho môi trường production
         K8S_API_URL = 'https://103.173.66.104:6443'
-        KUBECONFIG_CREDENTIALS_ID = 'k8s-staging-jenkins-sa-token'
-        NAMESPACE = 'staging'
+        KUBECONFIG_CREDENTIALS_ID = 'k8s-production-jenkins-sa-token'
+        NAMESPACE = 'production'
     }
     stages {
         stage('Build Docker Image') {
@@ -20,7 +20,7 @@ pipeline {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
                         dockerImage.push("${env.BRANCH_NAME}-${env.BUILD_ID}")
-                        dockerImage.push("staging-latest")
+                        dockerImage.push("latest")
                     }
                 }
             }
