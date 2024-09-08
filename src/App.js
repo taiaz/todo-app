@@ -5,7 +5,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header" style={{ fontSize: '48px' }}>
-        K8s Production
+        K8s Production 2
       </header>
     </div>
   );
