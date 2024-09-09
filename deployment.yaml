@@ -33,7 +33,7 @@ metadata:
   name: todo-app
   namespace: production
 spec:
-  type: ClusterIP
+  type: LoadBalancer #ClusterIP
   ports:
   - port: 80
     targetPort: 80
