@@ -67,12 +67,12 @@ pipeline {
             }
         }
         post {
-        always {
-            script {
-                sh 'docker system prune --force --filter "until=24h"'
-                echo "Docker containers, images, and volumes older than 24 hours have been cleaned up"
+            always {
+                script {
+                    sh 'docker system prune --force --filter "until=24h"'
+                    echo "Docker containers, images, and volumes older than 24 hours have been cleaned up"
+                }
             }
         }
-    }
     }
 }
