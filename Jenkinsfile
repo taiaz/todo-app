@@ -25,6 +25,14 @@ pipeline {
                 }
             }
         }
+        stage('Remove Local Docker Image') {
+            steps {
+                script {
+                    sh "docker rmi ${DOCKER_IMAGE} || true"
+                    sh "docker rmi ${LATEST_IMAGE} || true"
+                }
+            }
+        }
         stage('Check Kubernetes Connection') {
             steps {
                 script {
